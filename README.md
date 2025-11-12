@@ -4,7 +4,7 @@
 ## INSTALLATION INSTRUCTIONS
 
 ### CLI: 
-git clone https://github.com/brutalremains/Weapon_Forge 
+git clone https://github.com/brutalremains/Weapon_Forge
 cd Weapon_Forge
 python3 main.py
 

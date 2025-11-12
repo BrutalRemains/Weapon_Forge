@@ -1,23 +1,30 @@
 import random
 from weapon import *
 
-roles = ["Human Bandit", "Human Warrior", "Human Commoner", "Human Hunter", "Skeleton Warrior", "Skeletal Hunter"]
+roles = ["Bandit", "Warrior", "Commoner", "Hunter", "Savage"]
 names = ["Moriaty", "Unglaus", "Sable", "Annie", "Leonhart", "Eren", "Hange", "Kazuto", "Lisbeth", "Lochlann"]
+races = ["Skeleton", "Human", "Elf", "Dwarf", "Fungaloid", "Squirrelkin"]
 
 class NPC:
-    def __init__(self, name, role, weapon):
+    def __init__(self, name, role, race, weapon):
         self.name = name
         self.role = role
+        self.race = race
         self.weapon = weapon
+        self.health = 100
+
+    def is_alive(self):
+        return self.health > 0
 
     def description(self):        
         weapon_text = self.weapon.description("npc")
-        return (f"\n{self.name} the {self.role.lower()} appears before you!\n"
+        return (f"\n{self.name} the {self.race} {self.role.lower()} appears before you!\n"
                 f"{weapon_text}\n")
                 
     
 def generate_npc():
     name = random.choice(names)
     role = random.choice(roles)
+    race = random.choice(races)
     weapon = generate_weapon()
-    return NPC(name, role, weapon)
+    return NPC(name, role, race, weapon)

@@ -1,12 +1,10 @@
 from weapon import generate_weapon 
 from npc import generate_npc
+from player import Player
 
 def main():
-    player_weapon = generate_weapon()
-    print(player_weapon.description("player"))
-    npc = generate_npc()
-    print(npc.description())
-
+    player = Player(name="Kristian", weapon=generate_weapon())
+    print(player.weapon_description())
 
 
 if __name__ == "__main__":
