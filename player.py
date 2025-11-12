@@ -7,4 +7,11 @@ class Player:
         self.health = 100 # default
 
     def weapon_description(self):
-        return self.weapon.description("player")
+        return (f"You are {self.name}, a test subject for the the Great Smith\n"
+                f"{self.weapon.description("player")}")
+    
+    def is_alive(self):
+        return self.health > 0
+    
+    def take_damage(self, amount):
+        self.health = self.health - amount
