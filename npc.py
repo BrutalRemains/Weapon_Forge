@@ -19,6 +19,10 @@ class NPC:
     def take_damage(self, amount):
         self.health = self.health - amount
 
+    def attack(self, target):
+        damage = self.weapon.total_damage()
+        target.take_damage(damage)
+
     def description(self):        
         weapon_text = self.weapon.description("npc")
         return (f"\n{self.name} the {self.race} {self.role.lower()} appears before you!\n"
