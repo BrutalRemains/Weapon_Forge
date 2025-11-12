@@ -17,8 +17,8 @@ attachments = [{"name": "Bayonet", "bonus_damage": 2, "accuracy": 0, "weight": 1
                {"name": "none", "bonus_damage": 0, "accuracy": 0, "weight": 0, "type":"universal"}]
 
 # grips will affect a greater "chance to hit" ratio
-grips = [{"name": "Leather Wrap", "stability": 3, "bounce": -1},
-         {"name": "Lead Wrap", "stability": 5, "bounce": 0},
+grips = [{"name": "Leather", "stability": 3, "bounce": -1},
+         {"name": "Lead", "stability": 5, "bounce": 0},
          {"name": "Wooden", "stability": 4, "bounce": -2},
          {"name": "Construction Paper", "stability": 0, "bounce": 7}]
 
@@ -58,7 +58,7 @@ class Weapon:
         if self.accuracy >= 7:
             return "accurate"
         elif self.accuracy >= 3 and self.accuracy < 7:
-            return "okay"
+            return "averagely accurate"
         else:
             return "inaccurate"    
     
@@ -68,21 +68,25 @@ class Weapon:
             return "."
         
         if self.attachment["name"] == "Spike" and self.core["type"] == "Ranged":
-            return f",  its accompanying projectiles laden  with spikes."
-        return f" attached with a {self.attachment['name']}"
+            return f", its accompanying projectiles laden with spikes."
+        return f" attached with a {self.attachment['name'].lower()}."
 
-    def description(self):
+    def description(self, perspective="npc"):
         #adjustment for no attachment
         attachment_text = self.attachment_flavor()
 
-        enchant_text = (f"It is {self.enchant['name']} enchanted.\n"
+        enchant_text = (f"It is {self.enchant['name'].lower()} enchanted.\n"
                         if self.enchant['name'] != "none" else "")
         
-        return(f"You wield a {self.core['name']}{attachment_text}\n"
-        f"Running your fingers across the grip, you notice that it's {self.grip['name'].lower()}.\n"
-        f"You close your eyes, channel your inner conciousness and attune to the weapon.\n" 
-        f"{enchant_text}"
-        f"This weapon is pretty {self.assess_strength} and {self.assess_accuracy}.")
+        if perspective == "player":
+            return(f"You wield a {self.core['name'].lower()}{attachment_text}\n"
+            f"Running your fingers across the grip, you notice its wrapped in {self.grip['name'].lower()}.\n"
+            f"You close your eyes, channel your inner conciousness and attune to the weapon.\n" 
+            f"{enchant_text}"
+            f"It could be considered {self.assess_strength} and {self.assess_accuracy}.")
+        
+        if perspective == "npc":
+            return f"They appear to wield a {self.core['name'].lower()}{attachment_text}\n"
 
 
 
