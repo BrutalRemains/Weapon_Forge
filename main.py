@@ -1,5 +1,8 @@
+from weapon import * 
+
 def main():
-    print("Hello from weapon-forge!")
+    player_weapon = generate_weapon()
+    print(player_weapon.description())
 
 
 if __name__ == "__main__":

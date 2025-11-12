@@ -9,11 +9,12 @@ cores = [{"name": "Sword", "type":"Melee", "base_damage": 6, "speed": 4},
          {"name": "Pistol", "type":"Ranged", "base_damage": 4, "speed": 6}]
 
 # attachments will be rolled onto every weapon, adding either damage or accuracy or removing them. some will be melee only and some will be ranged only# some will be melee only and some will be ranged only
-attachments = [{"name": "Bayonet", "bonus_damage": 2, "accuracy": 0, "weight": 1},
-               {"name": "Scope", "bonus_damage": 0, "accuracy": 3, "weight": 1},
-               {"name": "Spike", "bonus_damage": 3, "accuracy": -1, "weight": 2},
-               {"name": "Axe Head", "bonus_damage": 6, "accuracy": -3, "weight": 4},
-               {"name": "Barbed Wire", "bonus_damage":4, "accuracy": -2, "weight": 2}]
+attachments = [{"name": "Bayonet", "bonus_damage": 2, "accuracy": 0, "weight": 1, "type":"ranged"},
+               {"name": "Scope", "bonus_damage": 0, "accuracy": 3, "weight": 1, "type":"ranged"},
+               {"name": "Spike", "bonus_damage": 3, "accuracy": -1, "weight": 2, "type":"universal"},
+               {"name": "Axe Head", "bonus_damage": 6, "accuracy": -3, "weight": 4, "type":"melee"},
+               {"name": "Barbed Wire", "bonus_damage": 4, "accuracy": -2, "weight": 2, "type":"melee"},
+               {"name": "none", "bonus_damage": 0, "accuracy": 0, "weight": 0, "type":"universal"}]
 
 # grips will affect a greater "chance to hit" ratio
 grips = [{"name": "Leather Wrap", "stability": 3, "bounce": -1},
@@ -25,7 +26,8 @@ grips = [{"name": "Leather Wrap", "stability": 3, "bounce": -1},
 enchants = [{"name": "Flame", "element": "fire", "power": 3, "status_effect": "burn"},
             {"name": "Frost", "element": "ice", "power": 2, "status_effect": "chill"},
             {"name": "Lightning", "element": "electric", "power": 4, "status_effect": "stun"},
-            {"name": "Blood", "element": "bleed", "power": 4, "status_effect": "bleed"}]
+            {"name": "Blood", "element": "bleed", "power": 4, "status_effect": "bleed"},
+            {"name": "none", "element": "none", "power": 0, "status_effect": "none"},]
 
 class Weapon:
     def __init__(self, core, attachment, grip, enchant):
@@ -40,7 +42,7 @@ class Weapon:
         self.accuracy = attachment["accuracy"] + grip["stability"] - grip["bounce"]
         self.element = enchant["element"]
         self.power = enchant["power"]
-        self.status_effect["status_effect"]
+        self.status_effect = enchant["status_effect"]
 
         self.assess_strength = self.assign_strength()
         self.assess_accuracy = self.assign_accuracy()
@@ -59,15 +61,36 @@ class Weapon:
             return "okay"
         else:
             return "inaccurate"    
+    
+    def attachment_flavor(self):
+        # attachments that are universal should behave differently depending on the weapon type
+        if self.attachment["name"] == "none":
+            return "."
+        
+        if self.attachment["name"] == "Spike" and self.core["type"] == "Ranged":
+            return f",  its accompanying projectiles laden  with spikes."
+        return f" attached with a {self.attachment['name']}"
 
     def description(self):
-        return(f"\nYou wield a {self.core['name']} attached with a {self.attachment['name']}.\n"
-               f"Running your fingers across the grip, you notice that it's {self.grip['name']}.\n"
-               f"You close your eyes and channel your inner conciousness and attune to the weapon.\n" 
-               f"It is {self.enchant['name']} enchanted."
-               f"This weapon is pretty {self.assess_strength}.")
+        #adjustment for no attachment
+        attachment_text = self.attachment_flavor()
+
+        enchant_text = (f"It is {self.enchant['name']} enchanted.\n"
+                        if self.enchant['name'] != "none" else "")
+        
+        return(f"You wield a {self.core['name']}{attachment_text}\n"
+        f"Running your fingers across the grip, you notice that it's {self.grip['name'].lower()}.\n"
+        f"You close your eyes, channel your inner conciousness and attune to the weapon.\n" 
+        f"{enchant_text}"
+        f"This weapon is pretty {self.assess_strength} and {self.assess_accuracy}.")
 
 
 
 def generate_weapon():
-    return True
+    core = random.choice(cores)
+    valid_attachments = [a for a in attachments if a["type"] == core["type"] or a["type"] ==  "universal"] 
+    attachment = random.choice(valid_attachments)
+    grip = random.choice(grips)
+    enchant = random.choice(enchants)
+    return Weapon(core, attachment, grip, enchant)
+    
