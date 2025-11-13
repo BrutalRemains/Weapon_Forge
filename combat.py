@@ -32,17 +32,19 @@ class Combat:
 
             defender.take_damage(total_damage)
             print(f"{attacker.name} strikes with their {attacker.weapon.core['name']} ({hit_chance:.0f}% chance)")
-            print(f"The attack does {total_damage}!")
+            print(f"The attack does {total_damage}!\n")
 
             if weapon.status_effect != "none":
-                print(f"The attack appied {weapon.status_effect} to the target!")
-        else:
-            print(f"{attacker.name}'s attack misses!")
-    
-    def simulate_duel(self):
-        print("Now! Fight for the Great Smith!")
-        time.sleep(2)
+                effect_chance = 20 # status chance
 
+                if random.random() < (effect_chance / 100):
+                    # attacker.apply_status(defender)
+                    print(f"The attack appied {weapon.status_effect} to the target!")
+        else:
+            print(f"{attacker.name} strikes with their {attacker.weapon.core['name']} ({hit_chance:.0f}% chance)")
+            print(f"{attacker.name}'s attack misses!\n")
+    
+    def simulate_duel(self):    
         while self.player.is_alive() and self.npc.is_alive():
             self.player_meter += self.player.weapon.speed
             self.npc_meter += self.npc.weapon.speed

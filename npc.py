@@ -25,7 +25,7 @@ class NPC:
 
     def description(self):        
         weapon_text = self.weapon.description("npc")
-        return (f"\n{self.name} the {self.race} {self.role.lower()} appears before you!\n"
+        return (f"\n{self.name} the {self.race} {self.role} appears before you!\n"
                 f"{weapon_text}\n")
                 
     
