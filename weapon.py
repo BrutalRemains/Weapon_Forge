@@ -1,12 +1,12 @@
 import random
 
 # cores are the weapon bases, organized by a list of dictionaries
-cores = [{"name": "Sword", "type":"Melee", "base_damage": 6, "speed": 4}, 
-         {"name": "Bow", "type":"Ranged", "base_damage": 6, "speed": 4},
-         {"name": "Hammer", "type":"Melee", "base_damage": 10, "speed": 2},
-         {"name": "Rifle", "type":"Ranged", "base_damage": 10, "speed": 2},
-         {"name": "Dagger", "type":"Melee", "base_damage": 4, "speed": 6},
-         {"name": "Pistol", "type":"Ranged", "base_damage": 4, "speed": 6}]
+cores = [{"name": "Sword", "type":"Melee", "base_damage": 6, "speed": 4, "weight" : 1}, 
+         {"name": "Bow", "type":"Ranged", "base_damage": 6, "speed": 4, "weight" : 1},
+         {"name": "Hammer", "type":"Melee", "base_damage": 10, "speed": 2, "weight" : 3},
+         {"name": "Rifle", "type":"Ranged", "base_damage": 10, "speed": 2, "weight" : 2},
+         {"name": "Dagger", "type":"Melee", "base_damage": 4, "speed": 6, "weight" : 0},
+         {"name": "Pistol", "type":"Ranged", "base_damage": 4, "speed": 5, "weight" : 1}]
 
 # attachments will be rolled onto every weapon, adding either damage or accuracy or removing them. some will be melee only and some will be ranged only# some will be melee only and some will be ranged only
 attachments = [{"name": "Bayonet", "bonus_damage": 2, "accuracy": 0, "weight": 1, "type":"ranged"},
@@ -43,6 +43,7 @@ class Weapon:
         self.element = enchant["element"]
         self.power = enchant["power"]
         self.status_effect = enchant["status_effect"]
+        self.weight = core["weight"] + attachment["weight"]
 
         self.assess_strength = self.assign_strength()
         self.assess_accuracy = self.assign_accuracy()
@@ -61,6 +62,14 @@ class Weapon:
             return "averagely accurate"
         else:
             return "inaccurate"    
+        
+    def assign_weight(self):
+        if self.weight <= 1:
+            return "light"
+        elif self.weight >= 2 and self.weight <= 4:
+            return "normal"
+        elif self.weight >= 5 and self.weight <= 7:
+            return "heavy"
     
     def attachment_flavor(self):
         # attachments that are universal should behave differently depending on the weapon type
