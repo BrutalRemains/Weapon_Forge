@@ -7,8 +7,8 @@ import time
 def main_menu():
     run = True
     while run:
-        print("Welcome to the WEAPON FORGE where you will do battle for the Great Smith!")
-        print("------MAIN MENU------\n")
+        print("Welcome to the WEAPON FORGE where you will do battle for the Great Smith!\n")
+        print("------MAIN MENU------")
         print("1. Start Game")
         print("2. About")
         print("3. Quit")
@@ -46,15 +46,16 @@ def start_game():
     input(f"Press ENTER...")
     if winner  == player:
         print("------WINNER------\n")
-        print("You have proven yourself worthy of the forge!")
+        print("You have proven yourself worthy of the forge!\n")
+        time.sleep(3)
     
     else:
         print("You lose.")
-        time.sleep(2)
+        time.sleep(1.5)
         print("The Great Smith turns away.")
         time.sleep(1.5)
-        print("Disgusting.")
-
+        print("Disgusting.\n")
+        time.sleep(1.5)
 
 
 
