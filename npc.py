@@ -12,7 +12,8 @@ class NPC:
         self.role = role
         self.race = race
         self.weapon = weapon
-        self.health = 100
+        self.health = 50
+        self.status_effects = []
 
     def is_alive(self):
         return self.health > 0
@@ -29,21 +30,30 @@ class NPC:
         return (f"\n{self.name} the {self.race} {self.role} appears before you!\n"
                 f"{weapon_text}\n")
 
-    def take_status(self, status_effect, source):
-        status_effects = {
+    def take_status(self, effect_name, source):
+        effect_map = {
             "burn": Burn,
             "bleed": Bleed,
-            #"stun": Stun,
-            #"chill": Chill
+            "stun": Stun,
+            "chill": Chill
         }
 
-        if status_effect in status_effects:
-            effect = status_effects[status_effect](source)
+        if effect_name in effect_map:
+            effect = effect_map[effect_name](source) # takes the status effect string from the dictionary, builds the associated class: Burn(source)
             effect.apply(self)
             self.status_effects.append(effect)
-    
-    def apply_status(self, status_effect, target):
-        target.take_status(status_effect, self)                
+
+    def apply_status(self, target, status_effect):
+        target.take_status(status_effect, self)
+
+    def tick_status(self):
+        expired = []
+        for effect in self.status_effects:
+            if effect.tick(self):
+                expired.append(effect)
+        for effect in expired:
+            print(f"{self.name}'s {effect.name} wore off!")        
+            self.status_effects.remove(effect)                
     
 def generate_npc():
     name = random.choice(names)

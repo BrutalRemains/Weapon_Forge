@@ -16,16 +16,14 @@ class Combat:
     
     def resolve_attack(self, attacker, defender):
         weapon = attacker.weapon
-        # Convert accuracy/weight into a predictable hit chance (percentage)
-        # base = weapon.accuracy - weapon.weight  (can be negative)
+        # Convert accuracy/weight into a % based hit chance (percentage)
         # Map base to percent: 50% + base * 6 (adjust multiplier as needed)
-        # Clamp so nothing is 0% or 100% (keep between 5% and 95%)
+        
         base = weapon.accuracy - weapon.weight
         hit_chance = 50 + base * 6
-        hit_chance = max(25, min(95, hit_chance))
+        hit_chance = max(25, min(95, hit_chance)) #25% chance to hit is the bare minimum no matter what. Even at 25, stalemates can occur and created a negative experience
 
         hit = random.random() < (hit_chance / 100.0)
-
         if hit:
             self.miss_counter = 0
             base_damage = weapon.total_damage
@@ -36,18 +34,17 @@ class Combat:
             print(f"{attacker.name} strikes with their {attacker.weapon.core['name']}")
             print(f"{attacker.name}'s attack does {total_damage} damage")
 
-            if weapon.status_effect != "none":
+            if weapon.status_effect != "none": # effect application inn combat
                 effect_chance = 20 # status chance
 
                 if random.random() < (effect_chance / 100):
-                    # attacker.apply_status(defender)
                     print(f"This attack applied {weapon.status_effect} to the target")
-            print()  # blank line after complete attack
+                    attacker.apply_status(defender, weapon.status_effect)
+       
         else:
             self.miss_counter += 1
             print(f"{attacker.name} strikes with their {attacker.weapon.core['name']}")
             print(f"{attacker.name}'s attack misses")
-            print()  # blank line after complete attack
     
     def simulate_duel(self):    
         while self.player.is_alive() and self.npc.is_alive():
@@ -56,6 +53,8 @@ class Combat:
 
             if self.player_meter >= self.meter_threshold:
                 self.resolve_attack(self.player, self.npc)
+                print()  # blank line before status effects
+                self.npc.tick_status()  # apply status effects to the defender after attack
                 self.player_meter = self.player_meter % self.meter_threshold 
                 time.sleep(1.4)
             
@@ -65,6 +64,8 @@ class Combat:
 
             if self.npc.is_alive() and self.npc_meter >= self.meter_threshold:
                 self.resolve_attack(self.npc, self.player)
+                print()  # blank line before status effects
+                self.player.tick_status()  # apply status effects to the defender after attack
                 self.npc_meter = self.npc_meter % self.meter_threshold
                 time.sleep(1.4)
             

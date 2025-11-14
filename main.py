@@ -1,4 +1,4 @@
-from weapon import generate_weapon 
+from weapon import *
 from npc import generate_npc
 from player import Player
 from combat import Combat
@@ -26,15 +26,18 @@ def main_menu():
 
 def start_game():
     print("\nYou were brought here, to the Weapon Forge as a test subject for the Great Smith, and his creations.")
+
     player_name = input("\nThe Great Smith has given you the following designation: ")
-    player = Player(player_name, generate_weapon())
+    player = Player(player_name, generate_weapon())   
     npc = generate_npc()
-    print(f"{player.name.capitalize()}! Prepare to test a Weapon of the Forge!\n")
+
+    print(f"{player.name}! Prepare to test a Weapon of the Forge!\n")
     time.sleep(1.5)
     print("Oh! In a fight to the death by the way!\n")
     time.sleep(1.5)
     print("---------------------------------------\n")
-    print(player.weapon_description())  
+    
+    print(player.weapon_description())
     print(npc.description())
     input(f"Press ENTER to draw your {player.weapon.core['name']}...")
 
