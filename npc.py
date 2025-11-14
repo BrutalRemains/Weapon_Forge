@@ -1,5 +1,6 @@
 import random
 from weapon import *
+from statuseffect import *
 
 roles = ["Bandit", "Warrior", "Commoner", "Hunter", "Savage"]
 names = ["Moriaty", "Unglaus", "Sable", "Annie", "Leonhart", "Eren", "Hange", "Kazuto", "Lisbeth", "Lochlann"]
@@ -27,7 +28,22 @@ class NPC:
         weapon_text = self.weapon.description("npc")
         return (f"\n{self.name} the {self.race} {self.role} appears before you!\n"
                 f"{weapon_text}\n")
-                
+
+    def take_status(self, status_effect, source):
+        status_effects = {
+            "burn": Burn,
+            "bleed": Bleed,
+            #"stun": Stun,
+            #"chill": Chill
+        }
+
+        if status_effect in status_effects:
+            effect = status_effects[status_effect](source)
+            effect.apply(self)
+            self.status_effects.append(effect)
+    
+    def apply_status(self, status_effect, target):
+        target.take_status(status_effect, self)                
     
 def generate_npc():
     name = random.choice(names)

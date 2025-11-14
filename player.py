@@ -1,11 +1,13 @@
+import random
 from weapon import Weapon, generate_weapon
+from statuseffect import *
 
 class Player:
     def __init__(self, name, weapon):
         self.name = name
         self.weapon = weapon
         self.health = 50 # default
-        self.status = None # whether a status effect is applied
+        self.status = []
     
     def is_alive(self):
         return self.health > 0
@@ -20,16 +22,18 @@ class Player:
     def weapon_description(self):
         return f"{self.weapon.description('player')}"
     
-    def apply_status(self, target, effect):
-        target.take_status(effect)
+    def take_status(self, status_effect, source):
+        status_effects = {
+            "burn": Burn,
+            "bleed": Bleed,
+            #"stun": Stun,
+            #"chill": Chill
+        }
+
+        if status_effect in status_effects:
+            effect = status_effects[status_effect](source)
+            effect.apply(self)
+            self.status_effects.append(effect)
     
-    def take_status(self, target, effect):
-        self.status = effect
-
-        if self.status == "burn":
-            burn_damage = int(self.weapon.total_damage * 0.2)
-            self.take_damage(burn_damage)
-
-        if self.status == "bleed":
-            bleed_damage = int(self.weapon.total_damage * 0.05)
-            self.take_damage(bleed_damage)
+    def apply_status(self, status_effect, target):
+        target.take_status(status_effect, self)
