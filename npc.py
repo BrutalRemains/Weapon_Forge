@@ -1,6 +1,7 @@
 import random
 from weapon import *
 from statuseffect import *
+from player import Player
 
 # names npc's could have
 with open("databases/names.json", "r") as file:
@@ -14,65 +15,21 @@ with open("databases/roles.json", "r") as file:
 with open("databases/races.json", "r") as file:
     races = json.load(file)
 
-
-class NPC:
-    def __init__(self, name, role, race, weapon):
-        self.name = name
-        self.role = role
+class NPC(Player):
+    def __init__(self, name, weapon, role, race):
+        super().__init__(name, weapon)
+        self.role = role  
         self.race = race
-        self.weapon = weapon
-        self.health = 50
-        self.meter_threshold = 10
-        self.status_effects = []
-
-    def is_alive(self):
-        return self.health > 0
-
-    def take_damage(self, amount):
-        self.health = self.health - amount
-
-    def attack(self, target):
-        damage = self.weapon.total_damage()
-        target.take_damage(damage)
 
     def description(self):        
         weapon_text = self.weapon.description("npc")
         return (f"\n{self.name} the {self.race} {self.role} appears before you!\n"
                 f"{weapon_text}\n")
 
-    def take_status(self, effect_name, source):
-        effect_map = {
-            "burn": Burn,
-            "bleed": Bleed,
-            "stun": Stun,
-            "chill": Chill
-        }
-
-        if effect_name in effect_map:
-            effect = effect_map[effect_name](source) # takes the status effect string from the dictionary, builds the associated class: Burn(source)
-            effect.apply(self)
-            self.status_effects.append(effect)
-
-    def apply_status(self, target, status_effect):
-        target.take_status(status_effect, self)
-
-    def tick_status(self):
-        expired = []
-        for effect in self.status_effects:
-            if effect.tick(self):
-                expired.append(effect)
-        for effect in expired:
-            print(f"{self.name}'s {effect.name} wore off!")        
-            self.status_effects.remove(effect)                
-    def is_stunned(self):
-        for effect in self.status_effects:
-            if effect.name == "stun":
-                return True
-        return False
 
 def generate_npc():
     name = random.choice(names)
     role = random.choice(roles)
     race = random.choice(races)
     weapon = generate_weapon()
-    return NPC(name, role, race, weapon)
+    return NPC(name, weapon, role, race)

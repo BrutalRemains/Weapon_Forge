@@ -53,3 +53,10 @@ class Player:
             if effect.name == "stun":
                 return True
         return False
+    
+class NOC(Player):
+    def __init__(self, name, weapon, role, race):
+        super().__init__(name, weapon)
+        self.role = role
+        self.race = race
+
