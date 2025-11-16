@@ -1,33 +1,21 @@
 import random
+import json
 
 # cores are the weapon bases, organized by a list of dictionaries
-cores = [{"name": "Sword", "type":"Melee", "base_damage": 6, "speed": 4, "weight" : 1}, 
-         {"name": "Bow", "type":"Ranged", "base_damage": 6, "speed": 4, "weight" : 1},
-         {"name": "Hammer", "type":"Melee", "base_damage": 10, "speed": 2, "weight" : 3},
-         {"name": "Rifle", "type":"Ranged", "base_damage": 10, "speed": 2, "weight" : 2},
-         {"name": "Dagger", "type":"Melee", "base_damage": 4, "speed": 6, "weight" : 0},
-         {"name": "Pistol", "type":"Ranged", "base_damage": 4, "speed": 5, "weight" : 1}]
+with open("databases/weapon_cores.json", "r") as file:
+    cores = json.load(file)
 
 # attachments will be rolled onto every weapon, adding either damage or accuracy or removing them. some will be melee only and some will be ranged only# some will be melee only and some will be ranged only
-attachments = [{"name": "Bayonet", "bonus_damage": 2, "accuracy": 0, "weight": 1, "type":"ranged"},
-               {"name": "Scope", "bonus_damage": 0, "accuracy": 3, "weight": 1, "type":"ranged"},
-               {"name": "Spike", "bonus_damage": 3, "accuracy": -1, "weight": 2, "type":"universal"},
-               {"name": "Axe Head", "bonus_damage": 6, "accuracy": -3, "weight": 4, "type":"melee"},
-               {"name": "Barbed Wire", "bonus_damage": 4, "accuracy": -2, "weight": 2, "type":"melee"},
-               {"name": "none", "bonus_damage": 0, "accuracy": 0, "weight": 0, "type":"universal"}]
+with open("databases/attachments.json", "r") as file:
+    attachments = json.load(file)
 
 # grips will affect a greater "chance to hit" ratio
-grips = [{"name": "Leather", "stability": 3, "bounce": -1},
-         {"name": "Lead", "stability": 5, "bounce": 0},
-         {"name": "Wooden", "stability": 4, "bounce": -2},
-         {"name": "Construction Paper", "stability": 0, "bounce": 7}]
+with open("databases/grips.json", "r") as file:
+    grips = json.load(file)
 
 # enchants will simply be added stats
-enchants = [{"name": "Flame", "element": "fire", "power": 3, "status_effect": "burn"},
-            {"name": "Frost", "element": "ice", "power": 2, "status_effect": "chill"},
-            {"name": "Lightning", "element": "electric", "power": 4, "status_effect": "stun"},
-            {"name": "Blood", "element": "bleed", "power": 4, "status_effect": "bleed"},
-            {"name": "none", "element": "none", "power": 0, "status_effect": "none"},]
+with open("databases/enchants.json", "r") as file:
+    enchants = json.load(file)
 
 class Weapon:
     def __init__(self, core, attachment, grip, enchant):
@@ -89,7 +77,7 @@ class Weapon:
         
         if perspective == "player":
             return(f"You wield a {self.core['name'].lower()}{attachment_text}\n"
-            f"Running your fingers across the grip, you notice its wrapped in {self.grip['name'].lower()}.\n"
+            f"Running your fingers across the base, you notice it has as {self.grip['name'].lower()} grip.\n"
             f"You close your eyes, channel your inner conciousness and attune to the weapon.\n" 
             f"{enchant_text}"
             f"It could be considered {self.assess_strength} and {self.assess_accuracy}.")
@@ -101,7 +89,7 @@ class Weapon:
 
 def generate_weapon():
     core = random.choice(cores)
-    valid_attachments = [a for a in attachments if a["type"] == core["type"] or a["type"] ==  "universal"] 
+    valid_attachments = [a for a in attachments if a["type"] == core["type"] or a["type"] ==  "Universal"] # matches attachments to its appropriate possible type, very important line
     attachment = random.choice(valid_attachments)
     grip = random.choice(grips)
     enchant = random.choice(enchants)

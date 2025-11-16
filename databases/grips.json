@@ -1,0 +1,17 @@
+[
+    {"name": "Leather", "stability": 3, "bounce": -1},
+    {"name": "Lead", "stability": 5, "bounce": 0},
+    {"name": "Oak", "stability": 4, "bounce": -2},
+    {"name": "Construction Paper", "stability": 0, "bounce": 7},
+    {"name": "Mahogany", "stability": 3, "bounce": -1},
+    {"name": "Adamantine", "stability": 5, "bounce": 0},
+    {"name": "Woolen", "stability": 4, "bounce": -2},
+    {"name": "Stone", "stability": 0, "bounce": 7},
+    {"name": "Uranium", "stability": 3, "bounce": -1},
+    {"name": "Ivory", "stability": 5, "bounce": 0},
+    {"name": "Snakeskin", "stability": 4, "bounce": -2},
+    {"name": "Construction Paper Wrapped", "stability": 0, "bounce": 7},
+    {"name": "Duct-tape Wrapped", "stability": 0, "bounce": 7},
+    {"name": "Rubber", "stability": 3, "bounce": -1},
+    {"name": "Chicken Bone", "stability": 3, "bounce": -1}
+]

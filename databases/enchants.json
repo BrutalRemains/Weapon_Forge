@@ -1,0 +1,7 @@
+[
+    {"name": "Flame", "element": "fire", "power": 3, "status_effect": "burn"},
+    {"name": "Frost", "element": "ice", "power": 2, "status_effect": "chill"},
+    {"name": "Lightning", "element": "electric", "power": 4, "status_effect": "stun"},
+    {"name": "Blood", "element": "bleed", "power": 4, "status_effect": "bleed"},
+    {"name": "none", "element": "none", "power": 0, "status_effect": "none"}
+]
