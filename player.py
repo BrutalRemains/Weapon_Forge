@@ -7,6 +7,7 @@ class Player:
         self.name = name
         self.weapon = weapon
         self.health = 50 # default
+        self.meter_threshold = 10 #threshold for reac
         self.status_effects = []
     
     def is_alive(self):
@@ -46,3 +47,9 @@ class Player:
         for effect in expired:
             print(f"{self.name}'s {effect.name} wore off!")        
             self.status_effects.remove(effect)
+
+    def is_stunned(self):
+        for effect in self.status_effects:
+            if effect.name == "stun":
+                return True
+        return False

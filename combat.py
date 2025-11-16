@@ -7,7 +7,7 @@ class Combat:
         self.npc = npc
         self.player_meter = 0  # meter is an under the hood mechanic based on the speed of the weapon. 
         self.npc_meter = 0
-        self.meter_threshold = 10 # once this threshold is hit, player or npc will get an extra turn.
+      #  self.meter_threshold = 10 # once this threshold is hit, player or npc will get an extra turn.
 
         self.miss_counter = 0 # counter hidden mechanic that will force something to happen if a stalemate happens
     # def attack_miss_flavor(self, attacker):
@@ -48,25 +48,32 @@ class Combat:
     
     def simulate_duel(self):    
         while self.player.is_alive() and self.npc.is_alive():
-            self.player_meter += self.player.weapon.speed
-            self.npc_meter += self.npc.weapon.speed
+            if self.player.is_stunned():
+                self.player_meter = 0 # if player is affected by stun, their meter resets to 0
+            else:    
+                self.player_meter += self.player.weapon.speed # the mechanic which determines taking a turn
+            
+            if self.npc.is_stunned():
+                self.npc_meter = 0
+            else:
+                self.npc_meter += self.npc.weapon.speed
 
-            if self.player_meter >= self.meter_threshold:
+            if self.player_meter >= self.player.meter_threshold:
                 self.resolve_attack(self.player, self.npc)
                 print()  # blank line before status effects
                 self.npc.tick_status()  # apply status effects to the defender after attack
-                self.player_meter = self.player_meter % self.meter_threshold 
+                self.player_meter = self.player_meter % self.player.meter_threshold 
                 time.sleep(1.4)
             
             # Check for stalemate after each attack
             if self.miss_counter >= 5:
                 return self.stalemate_machina()
 
-            if self.npc.is_alive() and self.npc_meter >= self.meter_threshold:
+            if self.npc.is_alive() and self.npc_meter >= self.npc.meter_threshold:
                 self.resolve_attack(self.npc, self.player)
                 print()  # blank line before status effects
                 self.player.tick_status()  # apply status effects to the defender after attack
-                self.npc_meter = self.npc_meter % self.meter_threshold
+                self.npc_meter = self.npc_meter % self.npc.meter_threshold
                 time.sleep(1.4)
             
             # Check for stalemate after each attack

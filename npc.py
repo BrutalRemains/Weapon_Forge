@@ -2,9 +2,18 @@ import random
 from weapon import *
 from statuseffect import *
 
-roles = ["Bandit", "Warrior", "Commoner", "Hunter", "Savage"]
-names = ["Moriaty", "Unglaus", "Sable", "Annie", "Leonhart", "Eren", "Hange", "Kazuto", "Lisbeth", "Lochlann"]
-races = ["Skeleton", "Human", "Elf", "Dwarf", "Fungaloid", "Squirrelkin"]
+# names npc's could have
+with open("databases/names.json", "r") as file:
+    names = json.load(file)
+
+# what type the npc can be, does not affect game stats
+with open("databases/roles.json", "r") as file:
+    roles = json.load(file)
+
+# what race the npc can be, does not affect game stats
+with open("databases/races.json", "r") as file:
+    races = json.load(file)
+
 
 class NPC:
     def __init__(self, name, role, race, weapon):
@@ -13,6 +22,7 @@ class NPC:
         self.race = race
         self.weapon = weapon
         self.health = 50
+        self.meter_threshold = 10
         self.status_effects = []
 
     def is_alive(self):
@@ -54,7 +64,12 @@ class NPC:
         for effect in expired:
             print(f"{self.name}'s {effect.name} wore off!")        
             self.status_effects.remove(effect)                
-    
+    def is_stunned(self):
+        for effect in self.status_effects:
+            if effect.name == "stun":
+                return True
+        return False
+
 def generate_npc():
     name = random.choice(names)
     role = random.choice(roles)

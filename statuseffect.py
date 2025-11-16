@@ -36,14 +36,14 @@ class Bleed(StatusEffect):
         print(f"{target.name} suffers {bleed_damage} bleed damage!")
         return super().tick(target)
 
-class Stun(StatusEffect):
+class Stun(StatusEffect): # additional logic for stun is found in Player class and in combat.simulate_combat()
     def __init__(self, source):
         super().__init__(name="stun", duration=random.randint(1,3))
-        self.source = source
+        self.source = source 
 
 class Chill(StatusEffect):
     def __init__(self, source):
-        super().__init__(name="chill", duration=2)
+        super().__init__(name="chill", duration=4)
         self.source = source
 
     def apply(self, target):
