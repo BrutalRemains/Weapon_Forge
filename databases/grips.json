@@ -13,5 +13,6 @@
     {"name": "Construction Paper Wrapped", "stability": 0, "bounce": 7},
     {"name": "Duct-tape Wrapped", "stability": 0, "bounce": 7},
     {"name": "Rubber", "stability": 3, "bounce": -1},
-    {"name": "Chicken Bone", "stability": 3, "bounce": -1}
+    {"name": "Chicken Bone", "stability": 3, "bounce": -1},
+    {"name": "Vine", "stability": 3, "bounce": -1}
 ]

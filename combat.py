@@ -7,9 +7,11 @@ class Combat:
         self.npc = npc
         self.player_meter = 0  # meter is an under the hood mechanic based on the speed of the weapon. 
         self.npc_meter = 0
-      #  self.meter_threshold = 10 # once this threshold is hit, player or npc will get an extra turn.
 
         self.miss_counter = 0 # counter hidden mechanic that will force something to happen if a stalemate happens
+        self.player_damage_dealt = 0
+        self.npc_damage_dealt = 0
+    
     # def attack_miss_flavor(self, attacker):
     #     if self.attacker.weapon.assign_weight() == "light":
     #         return "{attacker.name} "
@@ -25,7 +27,7 @@ class Combat:
 
         hit = random.random() < (hit_chance / 100.0)
         if hit:
-            self.miss_counter = 0
+            self.miss_counter = 0 #resets to 0 if someone hits
             base_damage = weapon.total_damage
             enchant_bonus = weapon.power
             total_damage = base_damage + enchant_bonus
@@ -40,7 +42,11 @@ class Combat:
                 if random.random() < (effect_chance / 100):
                     print(f"This attack applied {weapon.status_effect} to the target")
                     attacker.apply_status(defender, weapon.status_effect)
-       
+
+            if attacker == self.player:
+                self.player_damage_dealt += total_damage
+            else:
+                self.npc_damage_dealt += total_damage # for tracking total dammge over the duel. Mainly used for losing side, since health is static
         else:
             self.miss_counter += 1
             print(f"{attacker.name} strikes with their {attacker.weapon.core['name']}")
@@ -60,7 +66,7 @@ class Combat:
 
             if self.player_meter >= self.player.meter_threshold:
                 self.resolve_attack(self.player, self.npc)
-                print()  # blank line before status effects
+                print()  
                 self.npc.tick_status()  # apply status effects to the defender after attack
                 self.player_meter = self.player_meter % self.player.meter_threshold 
                 time.sleep(1.4)

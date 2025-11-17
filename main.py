@@ -15,16 +15,18 @@ def main_menu():
         choice = input("\nPlease choose an option!: ")
         
         if choice == "1":
-            start_game()
+            run_game()
         elif choice == "2":
             print("credits")
         elif choice == "3" or "q".lower():
             print("The Great Smith will continue to forge away...")
             run = False
+        elif choice == "":
+            pass
         else:
             print("invalid choice")
 
-def start_game():
+def run_game():
     print("\nYou were brought here, to the Weapon Forge as a test subject for the Great Smith, and his creations.")
 
     player_name = input("\nThe Great Smith has given you the following designation: ")
@@ -53,13 +55,16 @@ def start_game():
         time.sleep(3)
     
     else:
-        print("You lose.")
+        print("------LOSER------")
         time.sleep(1.5)
         print("The Great Smith turns away.")
         time.sleep(1.5)
         print("Disgusting.\n")
-        time.sleep(1.5)
+        input("ENTER to see duel summary")
 
+    print("------Duel Summary------")
+    print(f"{player.name} dealt {combat.player_damage_dealt} total damage!")
+    print(f"{npc.name} dealt {combat.npc_damage_dealt} total damage!")
 
 
 def main():
