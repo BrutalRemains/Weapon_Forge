@@ -7,10 +7,10 @@
     {"name": "Greataxe", "type":"Melee", "base_damage": 12, "speed": 1, "weight" : 4},   
     {"name": "Dagger", "type":"Melee", "base_damage": 4, "speed": 6, "weight" : 0},
     {"name": "Whip", "type":"Melee", "base_damage": 3, "speed": 7, "weight" : 0},
-    {"name": "Bow", "type":"Ranged", "base_damage": 6, "speed": 4, "weight" : 1},
     {"name": "Scimitar", "type":"Melee", "base_damage": 5, "speed": 6, "weight" : 1},
     {"name": "Screwdriver", "type":"Melee", "base_damage": 1, "speed": 10, "weight" : 0},
     
+    {"name": "Bow", "type":"Ranged", "base_damage": 6, "speed": 4, "weight" : 1},
     {"name": "Hunting Rifle", "type":"Ranged", "base_damage": 10, "speed": 2, "weight" : 2},
     {"name": "Pistol", "type":"Ranged", "base_damage": 4, "speed": 5, "weight" : 1},    
     {"name": "Assault Rifle", "type":"Ranged", "base_damage": 7, "speed": 4, "weight" : 2},

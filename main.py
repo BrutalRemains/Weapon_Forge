@@ -41,6 +41,7 @@ def run_game():
     print("---------------------------------------\n")
     
     print(player.weapon_description())
+    input("\nPress ENTER to inspect your opponent! \n")
     print(npc.description())
     input(f"Press ENTER to draw your {player.weapon.core['name']}...")
 
@@ -61,11 +62,12 @@ def run_game():
         print("The Great Smith turns away.")
         time.sleep(1.5)
         print("Disgusting.\n")
-        input("ENTER to see duel summary")
+    input("Press ENTER to see duel summary...")
 
-    print("------Duel Summary------")
+    print("\n------Duel Summary------")
     print(f"{player.name} dealt {combat.player_damage_dealt} total damage!")
     print(f"{npc.name} dealt {combat.npc_damage_dealt} total damage!")
+    time.sleep(2)
 
 
 def main():

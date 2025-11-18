@@ -67,7 +67,17 @@ class Weapon:
         
         if self.attachment["name"] == "Spike" and self.core["type"] == "Ranged":
             return f", its accompanying projectiles laden with spikes."
-        return f" attached with a {self.attachment['name'].lower()}."
+        
+        a_an_plural = ""
+        # english important
+        if self.attachment['name'][0] == "A" or self.attachment['name'][0] == "E" or self.attachment['name'][0] == "I" or self.attachment['name'][0] == "O" or self.attachment['name'][0] == "U": 
+            a_an_plural = f"an {self.attachment['name'].lower()}." 
+        elif self.attachment['name'][-1] == "s" or self.attachment['name'] == "Barbed Wire":
+            a_an_plural = f"{self.attachment['name'].lower()}."
+        else:
+            a_an_plural = f"a {self.attachment['name'].lower()}."
+        
+        return f" attached with {a_an_plural}"
 
     def description(self, perspective="npc"):
         #adjustment for no attachment
@@ -76,15 +86,21 @@ class Weapon:
         enchant_text = (f"It is {self.enchant['name'].lower()} enchanted.\n"
                         if self.enchant['name'] != "none" else "")
         
-        if perspective == "player":
-            return(f"You wield a {self.core['name'].lower()}{attachment_text}\n"
+        a_or_an = ""
+        if self.core['name'][0] == "A" or self.core['name'][0] == "E" or self.core['name'][0] == "I" or self.core['name'][0] == "O" or self.core['name'][0] == "U":
+            a_or_an = f"an {self.core['name'].lower()}{attachment_text}"
+        else:
+            a_or_an = f"a {self.core['name'].lower()}{attachment_text}"
+
+        if perspective == "player":   
+            return(f"You wield {a_or_an}\n"
             f"Running your fingers across the base, you notice it has as {self.grip['name'].lower()} grip.\n"
             f"You close your eyes, channel your inner conciousness and attune to the weapon.\n" 
             f"{enchant_text}"
             f"It could be considered {self.assess_strength} and {self.assess_accuracy}.")
         
         if perspective == "npc":
-            return f"They appear to wield a {self.core['name'].lower()}{attachment_text}\n"
+            return f"They appear to wield {a_or_an}\n"
 
 
 

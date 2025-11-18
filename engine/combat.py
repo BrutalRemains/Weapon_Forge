@@ -30,8 +30,11 @@ class Combat:
             total_damage = base_damage + enchant_bonus
 
             defender.take_damage(total_damage)
-            print(f"{attacker.name} strikes with their {attacker.weapon.core['name']}")
-            print(f"{attacker.name}'s attack does {total_damage} damage")
+            print(f"{self.hit_flavor(attacker, defender)}")
+            if attacker == self.npc:
+                print(f"{attacker.name}'s attack does {total_damage} damage")
+            elif attacker == self.player:
+                print(f"Your attack does {total_damage} damage")
 
             if weapon.status_effect != "none": # effect application inn combat
                 effect_chance = 20 # status chance
@@ -65,7 +68,7 @@ class Combat:
                 print()  
                 self.npc.tick_status()  # apply status effects to the defender after attack
                 self.player_meter = self.player_meter % self.player.meter_threshold 
-                time.sleep(1.4)
+                input()
             
             # Check for stalemate after each attack
             if self.miss_counter >= 5:
@@ -73,10 +76,10 @@ class Combat:
 
             if self.npc.is_alive() and self.npc_meter >= self.npc.meter_threshold:
                 self.resolve_attack(self.npc, self.player)
-                print()  # blank line before status effects
+                print()  # blank line before['name'] status effects
                 self.player.tick_status()  # apply status effects to the defender after attack
                 self.npc_meter = self.npc_meter % self.npc.meter_threshold
-                time.sleep(1.4)
+                input()
             
             # Check for stalemate after each attack
             if self.miss_counter >= 6:
@@ -88,48 +91,89 @@ class Combat:
     def stalemate_machina(self):
         if self.miss_counter >= 5:
             print("The Great Smith grows impatient with this foolish display!\n")
-            time.sleep(1.4)
+            time.sleep(2)
             combatants = [self.player, self.npc]
             winner = random.choice(combatants)
             loser = self.npc if winner == self.player else self.player
             
             print(f"{winner.name} seizes the moment of divine intervention!")
-            time.sleep(1.4)
-            print(f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']}!\n")
+            time.sleep(2)
+            print(f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']['name']}!\n")
             loser.take_damage(loser.health)  # kill the loser
             return winner
     
     def miss_flavor(self, attacker):
-        if attacker == self.npc: #third person
-            if attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "melee":
+        if attacker == self.npc: # third person perspective
+            if attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "Melee":
                 return (f"{attacker.name} strikes swiftly, but catches air!")
-            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "melee":
-                return (f"{attacker.name} swings their {attacker.weapon.name} and misses!")
-            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "melee":
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "Melee":
+                return (f"{attacker.name} swings their {attacker.weapon.core['name']} and misses!")
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "Melee":
                 return (f"{attacker.name} lunges with a lumbering blow, leaving enough time for you to get out of the way")
-            elif attacker.weapon.type == "ranged":
+            elif attacker.weapon.type == "Ranged":
                 return (f"{attacker.name}'s shot whizzes past!")
-            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "thrown":
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "Thrown":
                 return (f"With a laboring toss, {attacker.name} is just off the mark!")
-            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "thrown":
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "Thrown":
                 return (f"{attacker.name}'s throw is just wayward!")
-            elif attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "thrown":
+            elif attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "Thrown":
                 return (f"With a toss too swift for their own good, the throw misses the target completely!")
         
-        if attacker == self.player:
-            if attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "melee":
+        if attacker == self.player: # first person
+            if attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "Melee":
                 return (f"You strike swiftly, but catch air!")
-            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "melee":
-                return (f"You swing your {attacker.weapon.name} and miss!")
-            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "melee":
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "Melee":
+                return (f"You swing your {attacker.weapon.core['name']} and miss!")
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "Melee":
                 return (f"You lunge with a lumbering blow, leaving enough time for you to get out of the way")
-            elif attacker.weapon.type == "ranged":
+            elif attacker.weapon.type == "Ranged":
                 return (f"Your shot whizzes past, your accuracy just off!")
-            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "thrown":
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "Thrown":
                 return (f"With a laboring toss, you are just off the mark!")
-            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "thrown":
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "Thrown":
                 return (f"Your throw is just wayward!")
-            elif attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "thrown":
+            elif attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "Thrown":
                 return (f"With a toss too swift for your own good, your throw misses the target completely!")
 
 
+        return "The action is too fast to describe, the attack misses!" # fallback in case of error occurring, a miss statement always happens
+    
+    def hit_flavor(self, attacker, defender):
+        if attacker == self.npc: #
+            if attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "Melee":
+                return (f"{attacker.name} strikes swiftly, and registers a hit!")
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "Melee":
+                hits =  [(f"{attacker.name} swings their {attacker.weapon.core['name']} and knicks you in the gut!"),
+                         (f"{attacker.name} is accurate with their {attacker.weapon.core['name']}, and clocks you!")]
+                return random.choice(hits) # example of scalability 
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "Melee":
+                return (f"{attacker.name} lunges with a lumbering blow, landing a powerful hit. You see stars!")
+            elif attacker.weapon.type == "Ranged":
+                return (f"{attacker.name}'s shot is on target, piercing you in the chest!")
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "Thrown":
+                return (f"With a laboring toss, {attacker.name} is on the mark, thats a hit!")
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "Thrown":
+                return (f"{attacker.name}'s throw is just accurate enough to hit you! Ouch!")
+            elif attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "Thrown":
+                return (f"With a toss so swift you never saw it coming, it strikes before['name'] you know it!")
+            else:
+                return (f"{attacker.name} strikes with their {attacker.weapon.core['name']['name']}")
+        if attacker == self.player:
+            if attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "Melee":
+                return (f"You strike swiftly, and register a hit!")
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "Melee":
+                hits =  [(f"You swings your {attacker.weapon.core['name']} and knick {defender.name} in the gut!"),
+                         (f"You're accurate with your {attacker.weapon.core['name']}, and clocks {defender.name}!")]
+                return random.choice(hits)  
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "Melee":
+                return (f"You lunge with a lumbering blow, and land a powerful hit!")
+            elif attacker.weapon.type == "Ranged":
+                return (f"Your shot is on target, piercing {defender.name} in the chest!")
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "Thrown":
+                return (f"With a laboring toss, you're on the mark, thats a hit!")
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "Thrown":
+                return (f"Your throw is just accurate enough to hit {defender.name}! Ouch!")
+            elif attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "Thrown":
+                return (f"With a super swift toss, your throw strikes {defender.name} before they ever saw it coming!")
+            else:
+                return print(f"You strike with your {attacker.weapon.core['name']['name']}")
