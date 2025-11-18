@@ -1,6 +1,6 @@
 import random
-from weapon import Weapon, generate_weapon
-from statuseffect import *
+from engine.weapon import Weapon, generate_weapon
+from engine.statuseffect import *
 
 class Player:
     def __init__(self, name, weapon):

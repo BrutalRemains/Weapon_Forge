@@ -1,7 +1,8 @@
-from weapon import *
-from npc import generate_npc
-from player import Player
-from combat import Combat
+from engine.weapon import *
+from engine.combat import Combat
+from entities.npc import generate_npc
+from entities.player import Player
+from engine.combat import Combat
 import time
 
 def main_menu():

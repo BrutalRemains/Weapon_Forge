@@ -1,7 +1,8 @@
+import json
 import random
-from weapon import *
-from statuseffect import *
-from player import Player
+from engine.weapon import *
+from engine.statuseffect import *
+from entities.player import Player
 
 # names npc's could have
 with open("databases/names.json", "r") as file:
