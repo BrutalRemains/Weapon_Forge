@@ -23,6 +23,7 @@ class Weapon:
         self.attachment = attachment
         self.grip = grip
         self.enchant = enchant
+        self.type = core["type"]
 
         # derived stats
         self.total_damage = core["base_damage"] + attachment["bonus_damage"]

@@ -1,6 +1,7 @@
 import random
 import time
 
+
 class Combat:
     def __init__(self, player, npc):
         self.player = player # player and npc object
@@ -11,10 +12,6 @@ class Combat:
         self.miss_counter = 0 # counter hidden mechanic that will force something to happen if a stalemate happens
         self.player_damage_dealt = 0
         self.npc_damage_dealt = 0
-    
-    # def attack_miss_flavor(self, attacker):
-    #     if self.attacker.weapon.assign_weight() == "light":
-    #         return "{attacker.name} "
     
     def resolve_attack(self, attacker, defender):
         weapon = attacker.weapon
@@ -49,8 +46,7 @@ class Combat:
                 self.npc_damage_dealt += total_damage # for tracking total dammge over the duel. Mainly used for losing side, since health is static
         else:
             self.miss_counter += 1
-            print(f"{attacker.name} strikes with their {attacker.weapon.core['name']}")
-            print(f"{attacker.name}'s attack misses")
+            print(f"{self.miss_flavor(attacker)}")
     
     def simulate_duel(self):    
         while self.player.is_alive() and self.npc.is_alive():
@@ -102,3 +98,38 @@ class Combat:
             print(f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']}!\n")
             loser.take_damage(loser.health)  # kill the loser
             return winner
+    
+    def miss_flavor(self, attacker):
+        if attacker == self.npc: #third person
+            if attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "melee":
+                return (f"{attacker.name} strikes swiftly, but catches air!")
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "melee":
+                return (f"{attacker.name} swings their {attacker.weapon.name} and misses!")
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "melee":
+                return (f"{attacker.name} lunges with a lumbering blow, leaving enough time for you to get out of the way")
+            elif attacker.weapon.type == "ranged":
+                return (f"{attacker.name}'s shot whizzes past!")
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "thrown":
+                return (f"With a laboring toss, {attacker.name} is just off the mark!")
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "thrown":
+                return (f"{attacker.name}'s throw is just wayward!")
+            elif attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "thrown":
+                return (f"With a toss too swift for their own good, the throw misses the target completely!")
+        
+        if attacker == self.player:
+            if attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "melee":
+                return (f"You strike swiftly, but catch air!")
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "melee":
+                return (f"You swing your {attacker.weapon.name} and miss!")
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "melee":
+                return (f"You lunge with a lumbering blow, leaving enough time for you to get out of the way")
+            elif attacker.weapon.type == "ranged":
+                return (f"Your shot whizzes past, your accuracy just off!")
+            elif attacker.weapon.assign_weight() == "heavy" and attacker.weapon.type == "thrown":
+                return (f"With a laboring toss, you are just off the mark!")
+            elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "thrown":
+                return (f"Your throw is just wayward!")
+            elif attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "thrown":
+                return (f"With a toss too swift for your own good, your throw misses the target completely!")
+
+
