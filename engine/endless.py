@@ -1,10 +1,22 @@
+import json
+import os
 import time
 from entities.npc import generate_npc
 from engine.combat import Combat
-hall_of_fame = []
+def load_hall_of_fame():
+    if os.path.exists("hall_of_fame.json"):
+        with open("hall_of_fame.json", "r") as f:
+            return json.load(f)
+
+def save_hall_of_fame(hall_of_fame):
+    with open("hall_of_fame.json", "w") as f:
+        json.dump(hall_of_fame, f, indent=4)
+
+hall_of_fame = load_hall_of_fame()
 
 def endless_duels(player):
     player.reset() #resets player health and status effects to normal
+    kill_count = 1 # this function is called after the first win
 
     while player.is_alive():
         npc = generate_npc()
@@ -29,8 +41,13 @@ def endless_duels(player):
         else:
             print(f"You, {player.name} have fallen after slaying {kill_count} for the Great Smith")
     
-            hall_of_fame_entry = {"Name": player.name,
-                                  "Weapon": player.weapon,
-                                  "Kill_Count": kill_count}
+            hall_of_fame_entry = {"name": player.name,
+                                  "weapon": player.weapon.description("hof"),
+                                  "kill_count": kill_count}
             hall_of_fame.append(hall_of_fame_entry)
             break
+
+def hof(hall_of_fame):
+    hall_of_fame.sort(key=lambda x: x["kill_count"], reverse=True) # this will ensure list is sorted by kill count descending
+    hall_of_fame = hall_of_fame[:5]# this keeps the list at 5
+    save_hall_of_fame[hall_of_fame]

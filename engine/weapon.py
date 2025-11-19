@@ -102,8 +102,8 @@ class Weapon:
         if perspective == "npc":
             return f"They appear to wield {a_or_an}\n"
 
-
-
+        if perspective == "hof": #hall of fame
+            return f"Weapon: {self.core["name"]}, {self.grip} grip, {attachment_text}. {enchant_text}"
 def generate_weapon():
     core = random.choice(cores)
     valid_attachments = [a for a in attachments if a["type"] == core["type"] or a["type"] ==  "Universal"] # matches attachments to its appropriate possible type, very important line
