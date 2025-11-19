@@ -4,9 +4,13 @@ import time
 from entities.npc import generate_npc
 from engine.combat import Combat
 def load_hall_of_fame(): # opens the hall_of_fame file, to keep it persistent between sessions
-    if os.path.exists("hall_of_fame.json"):
-        with open("../databases/hall_of_fame.json", "r") as f:
-            return json.load(f)
+    if os.path.exists("../databases/hall_of_fame.json"):
+       try:
+           with open("../databases/hall_of_fame.json", "r") as f:
+                return json.load(f)
+       except:
+           return []
+    return []
 
 def save_hall_of_fame(hall_of_fame): # saves to hall_of_fame file
     with open("../databases/hall_of_fame.json", "w") as f:
@@ -37,7 +41,7 @@ def endless_duels(player, hall_of_fame):
         if winner == player:
             kill_count += 1
             print(f"You have won again!")
-            time.sleep(1.4)
+            time.sleep(1)
         else:
             print(f"You, {player.name} have fallen after slaying {kill_count} for the Great Smith")
     
