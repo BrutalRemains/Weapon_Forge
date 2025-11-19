@@ -10,6 +10,10 @@ class Player:
         self.meter_threshold = 10 #threshold for reac
         self.status_effects = []
     
+    def reset(self):
+        self.health = 50
+        self.status_effects = 0
+   
     def is_alive(self):
         return self.health > 0
     

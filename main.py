@@ -35,9 +35,9 @@ def run_game():
     npc = generate_npc()
 
     print(f"{player.name}! Prepare to test a Weapon of the Forge!\n")
-    time.sleep(1.5)
+    time.sleep(2)
     print("Oh! In a fight to the death by the way!\n")
-    time.sleep(1.5)
+    time.sleep(2)
     print("---------------------------------------\n")
     
     print(player.weapon_description())
@@ -46,7 +46,7 @@ def run_game():
     input(f"Press ENTER to draw your {player.weapon.core['name']}...")
 
     print("\n------FIGHT TO THE DEATH------\n")
-
+    
     combat = Combat(player, npc)
     winner = combat.simulate_duel()
 
