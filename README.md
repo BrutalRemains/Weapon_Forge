@@ -27,7 +27,9 @@ Apart from all else, every run is designed to be completely self-contained, with
 
 ### CLI: 
 git clone https://github.com/brutalremains/Weapon_Forge
+
 cd Weapon_Forge
+
 python3 main.py
 
 
