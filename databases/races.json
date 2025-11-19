@@ -3,6 +3,8 @@
     "Human", 
     "Elf", 
     "Dwarf", 
-    "Fungaloid", 
+    "Orc",
+    "Lizardman",
+    "Fungoid", 
     "Squirrelkin"
 ]

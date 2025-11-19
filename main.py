@@ -4,6 +4,7 @@ from entities.npc import generate_npc
 from entities.player import Player
 from engine.combat import Combat
 from engine.endless import *
+from info import about
 import time
 
 def main_menu():
@@ -20,9 +21,10 @@ def main_menu():
         if choice == "1":
             run_game()
         elif choice == "2":
-            print("credits")
+            about()
         elif choice == "3":
             show_hall_of_fame()
+            input("Press ENTER to return to the main menu ")
         elif choice == "4" or "q".lower():
             print("The Great Smith will continue to forge away...")
             run = False
@@ -39,9 +41,9 @@ def run_game():
     npc = generate_npc()
 
     print(f"{player.name}! Prepare to test a Weapon of the Forge!\n")
-    time.sleep(1.4)
+    
     print("Oh! In a fight to the death by the way!\n")
-    time.sleep(2)
+    time.sleep(1)
     print("---------------------------------------\n")
     
     print(player.weapon_description())
@@ -70,7 +72,7 @@ def run_game():
 
     print("\n------Duel Summary------")
     print(f"{player.name} dealt {combat.player_damage_dealt} total damage!")
-    print(f"{npc.name} dealt {combat.npc_damage_dealt} total damage!")
+    print(f"{npc.name} dealt {combat.npc_damage_dealt} total damage!\n")
     time.sleep(2)
 
 

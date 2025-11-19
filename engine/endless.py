@@ -4,16 +4,16 @@ import time
 from entities.npc import generate_npc
 from engine.combat import Combat
 def load_hall_of_fame(): # opens the hall_of_fame file, to keep it persistent between sessions
-    if os.path.exists("../databases/hall_of_fame.json"):
+    if os.path.exists("databases/hall_of_fame.json"):
        try:
-           with open("../databases/hall_of_fame.json", "r") as f:
+           with open("databases/hall_of_fame.json", "r") as f:
                 return json.load(f)
        except:
            return []
     return []
 
 def save_hall_of_fame(hall_of_fame): # saves to hall_of_fame file
-    with open("../databases/hall_of_fame.json", "w") as f:
+    with open("databases/hall_of_fame.json", "w") as f:
         json.dump(hall_of_fame, f, indent=4)
 
 hall_of_fame = load_hall_of_fame()
@@ -44,6 +44,7 @@ def endless_duels(player, hall_of_fame):
             time.sleep(1)
         else:
             print(f"You, {player.name} have fallen after slaying {kill_count} for the Great Smith")
+            print("Perhaps the Great Smith will have etched your name into the hall of fame!")
     
             hall_of_fame_entry = {"name": player.name,
                                   "weapon": player.weapon.description("hof"),
@@ -67,4 +68,4 @@ def show_hall_of_fame():
     print("\n------Hall of Fame------")
     for i, entry in enumerate(hof):
         print(f"{i}. Name: {entry['name']}, Kill Count: {entry['kill_count']}")
-        print(f"    {entry['weapon']}, ")
+        print(f"    {entry['weapon']}")
