@@ -91,14 +91,14 @@ class Combat:
     def stalemate_machina(self):
         if self.miss_counter >= 5:
             print("The Great Smith grows impatient with this foolish display!\n")
-            time.sleep(2)
+            input()
             combatants = [self.player, self.npc]
             winner = random.choice(combatants)
             loser = self.npc if winner == self.player else self.player
             
             print(f"{winner.name} seizes the moment of divine intervention!")
-            time.sleep(2)
-            print(f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']['name']}!\n")
+            input()
+            print(f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']}!\n")
             loser.take_damage(loser.health)  # kill the loser
             return winner
     

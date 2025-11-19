@@ -3,6 +3,7 @@ from engine.combat import Combat
 from entities.npc import generate_npc
 from entities.player import Player
 from engine.combat import Combat
+from engine.endless import *
 import time
 
 def main_menu():
@@ -12,14 +13,17 @@ def main_menu():
         print("------MAIN MENU------")
         print("1. Start Game")
         print("2. About")
-        print("3. Quit")
+        print("3. Hall of Fame")
+        print("4. Quit")
         choice = input("\nPlease choose an option!: ")
         
         if choice == "1":
             run_game()
         elif choice == "2":
             print("credits")
-        elif choice == "3" or "q".lower():
+        elif choice == "3":
+            show_hall_of_fame()
+        elif choice == "4" or "q".lower():
             print("The Great Smith will continue to forge away...")
             run = False
         elif choice == "":
@@ -35,7 +39,7 @@ def run_game():
     npc = generate_npc()
 
     print(f"{player.name}! Prepare to test a Weapon of the Forge!\n")
-    time.sleep(2)
+    time.sleep(1.4)
     print("Oh! In a fight to the death by the way!\n")
     time.sleep(2)
     print("---------------------------------------\n")
@@ -54,8 +58,8 @@ def run_game():
     if winner  == player:
         print("------WINNER------\n")
         print("You have proven yourself worthy of the forge!\n")
-        time.sleep(3)
-    
+        input("ENTER")
+        endless_duels(player, hall_of_fame)
     else:
         print("------LOSER------")
         time.sleep(1.5)

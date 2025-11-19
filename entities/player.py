@@ -12,7 +12,7 @@ class Player:
     
     def reset(self):
         self.health = 50
-        self.status_effects = 0
+        self.status_effects = []
    
     def is_alive(self):
         return self.health > 0
