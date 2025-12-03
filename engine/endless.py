@@ -19,7 +19,7 @@ def save_hall_of_fame(hall_of_fame): # saves to hall_of_fame file
 hall_of_fame = load_hall_of_fame()
 
 def endless_duels(player, hall_of_fame):
-    player.reset() #resets player health and status effects to normal
+    player.reset() # failsafe ensures player starts fresh
     kill_count = 1 # this function is called after the first win
 
     while player.is_alive():
@@ -42,6 +42,7 @@ def endless_duels(player, hall_of_fame):
             kill_count += 1
             print(f"You have won again!")
             time.sleep(1)
+            player.reset()
         else:
             print(f"You, {player.name} have fallen after slaying {kill_count} for the Great Smith")
             print("Perhaps the Great Smith will have etched your name into the hall of fame!")
