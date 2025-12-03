@@ -25,18 +25,22 @@ def main_menu():
         elif choice == "3":
             show_hall_of_fame()
             input("Press ENTER to return to the main menu ")
-        elif choice == "4" or "q".lower():
+        elif choice == "4" or choice == "q".lower():
             print("The Great Smith will continue to forge away...")
             run = False
-        elif choice == "":
-            pass
+        
         else:
             print("invalid choice")
 
 def run_game():
     print("\nYou were brought here, to the Weapon Forge as a test subject for the Great Smith, and his creations.")
 
-    player_name = input("\nThe Great Smith has given you the following designation: ")
+    while True:
+        player_name = input("\nThe Great Smith has given you the following name (enter your name): ")
+        if len(player_name) > 0 and len(player_name) < 20:
+            break
+        print("Please input a real name")
+    
     player = Player(player_name, generate_weapon())   
     npc = generate_npc()
 

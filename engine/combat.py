@@ -68,18 +68,15 @@ class Combat:
                 print()  
                 self.npc.tick_status()  # apply status effects to the defender after attack
                 self.player_meter = self.player_meter % self.player.meter_threshold 
-                input()
+                input(f"Current Health: {self.player.health} (enter)")
             
-            # Check for stalemate after each attack
-            if self.miss_counter >= 5:
-                return self.stalemate_machina()
 
             if self.npc.is_alive() and self.npc_meter >= self.npc.meter_threshold:
                 self.resolve_attack(self.npc, self.player)
-                print()  # blank line before['name'] status effects
+                print()  # blank line before status effects
                 self.player.tick_status()  # apply status effects to the defender after attack
                 self.npc_meter = self.npc_meter % self.npc.meter_threshold
-                input()
+                input(f"Current Health: {self.player.health} (enter)")
             
             # Check for stalemate after each attack
             if self.miss_counter >= 6:
