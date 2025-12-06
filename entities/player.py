@@ -44,14 +44,16 @@ class Player:
         target.take_status(status_effect, self)
 
     def tick_status(self):
+        messages = []
         expired = []
         for effect in self.status_effects:
             if effect.tick(self):
                 expired.append(effect)
         for effect in expired:
-            print(f"{self.name}'s {effect.name} wore off!")        
+           # print(f"{self.name}'s {effect.name} wore off!")        
             self.status_effects.remove(effect)
-
+            messages.append(f"{self.name}'s {effect.name} wore off!")
+        return messages
     def is_stunned(self):
         for effect in self.status_effects:
             if effect.name == "stun":

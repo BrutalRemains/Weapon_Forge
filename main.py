@@ -7,6 +7,7 @@ from engine.endless import *
 from info import about
 import time
 
+
 def main_menu():
     run = True
     while run:

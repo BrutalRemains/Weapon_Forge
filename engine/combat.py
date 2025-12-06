@@ -14,6 +14,7 @@ class Combat:
         self.npc_damage_dealt = 0
     
     def resolve_attack(self, attacker, defender):
+        events = []
         weapon = attacker.weapon
         # Convert accuracy/weight into a % based hit chance (percentage)
         # Map base to percent: 50% + base * 6 (adjust multiplier as needed)
@@ -30,18 +31,24 @@ class Combat:
             total_damage = base_damage + enchant_bonus
 
             defender.take_damage(total_damage)
-            print(f"{self.hit_flavor(attacker, defender)}")
-            if attacker == self.npc:
-                print(f"{attacker.name}'s attack does {total_damage} damage")
-            elif attacker == self.player:
-                print(f"Your attack does {total_damage} damage")
+            events.append({
+                "type": "hit",
+                "attacker": attacker,
+                "flavor": self.hit_flavor(attacker, defender),
+                "damage": total_damage
+            })
 
             if weapon.status_effect != "none": # effect application inn combat
                 effect_chance = 20 # status chance
 
-                if random.random() < (effect_chance / 100):
-                    print(f"This attack applied {weapon.status_effect} to the target")
+                if random.random() < (effect_chance / 100):                    
                     attacker.apply_status(defender, weapon.status_effect)
+                    
+                    events.append({
+                    "type": "status_applied",
+                    "effect": weapon.status_effect,
+                    "target_name": defender.name,
+                    })
 
             if attacker == self.player:
                 self.player_damage_dealt += total_damage
@@ -49,8 +56,13 @@ class Combat:
                 self.npc_damage_dealt += total_damage # for tracking total dammge over the duel. Mainly used for losing side, since health is static
         else:
             self.miss_counter += 1
-            print(f"{self.miss_flavor(attacker)}")
-    
+            events.append({
+                "type": "miss",
+                "attacker": attacker,
+                "flavor": self.miss_flavor(attacker),
+            })
+        return events
+    # simulate_duel exists for maintaining cli compatibility
     def simulate_duel(self):    
         while self.player.is_alive() and self.npc.is_alive():
             if self.player.is_stunned():
@@ -63,19 +75,60 @@ class Combat:
             else:
                 self.npc_meter += self.npc.weapon.speed
 
+            # player hits
             if self.player_meter >= self.player.meter_threshold:
-                self.resolve_attack(self.player, self.npc)
-                print()  
-                self.npc.tick_status()  # apply status effects to the defender after attack
+                evs = self.resolve_attack(self.player, self.npc)
+                print()                
+                for ev in evs:
+                    t = ev.get("type")
+                    if t == "hit":
+                        print(ev.get("flavor", "A hit lands!"))
+                        dmg = ev.get("damage", 0)
+                        print(f"It deals {dmg} damage!")
+                    elif t == "miss":
+                        print(ev.get("flavor", "An attack misses."))
+                    elif t == "status_applied":
+                        eff = ev.get("effect")
+                        tgt = ev.get("target_name") 
+                    elif t == "info":
+                        print(ev.get("msg", "Info"))
+                    else:
+                        print(ev)
+                
+                msgs = self.npc.tick_status() or []
+                for m in msgs:
+                    print(m)
+                
                 self.player_meter = self.player_meter % self.player.meter_threshold 
                 input(f"Current Health: {self.player.health} (enter)")
             
 
-            if self.npc.is_alive() and self.npc_meter >= self.npc.meter_threshold:
-                self.resolve_attack(self.npc, self.player)
-                print()  # blank line before status effects
-                self.player.tick_status()  # apply status effects to the defender after attack
-                self.npc_meter = self.npc_meter % self.npc.meter_threshold
+            # npc hits
+            if self.npc_meter >= self.npc.meter_threshold:
+                evs = self.resolve_attack(self.npc, self.player)
+                print()                
+                for ev in evs:
+                    t = ev.get("type")
+                    if t == "hit":
+                        print(ev.get("flavor", "A hit lands!"))
+                        dmg = ev.get("damage", 0)
+                        print(f"It deals {dmg} damage!")
+                    elif t == "miss":
+                        print(ev.get("flavor", "An attack misses."))
+                    elif t == "status_applied":
+                        eff = ev.get("effect")
+                        tgt = ev.get("target_name") or (ev.get("target").name if ev.get("target") else 'Target')
+                        print(f"{tgt} is afflicted with {eff}!")
+                    elif t == "info":
+                        print(ev.get("msg", "Info"))
+                    else:
+                        print(ev)
+                
+                msgs = self.player.tick_status() or []
+                for m in msgs:
+                    print(m)
+                
+                self.npc_meter = self.npc_meter % self.npc.meter_threshold 
                 input(f"Current Health: {self.player.health} (enter)")
             
             # Check for stalemate after each attack
@@ -84,6 +137,70 @@ class Combat:
             
         winner = self.player if self.player.is_alive() else self.npc
         return winner
+    
+    def step(self):
+        # an essential refactor of simulate duel that using no blocking. it returns a list of events from the duel
+
+        events = []
+        # normal meter advance, keeping stun in mind
+        if self.player.is_stunned():
+            self.player_meter = 0 # if player is affected by stun, their meter resets to 0
+        else:    
+            self.player_meter += self.player.weapon.speed # the mechanic which determines taking a turn
+            
+        if self.npc.is_stunned():
+            self.npc_meter = 0
+        else:
+            self.npc_meter += self.npc.weapon.speed
+        
+        # player attack
+        if self.player_meter >= self.player.meter_threshold and self.player.is_alive() and self.npc.is_alive():
+            evs = self.resolve_attack(self.player,self.npc) #now resolve attacks returns events list, which we capture here
+            events.extend(evs)
+
+            # apply defender status ticks
+            msgs = self.npc.tick_status()
+            for m in msgs:
+                events.append({"type": "info", "msg": m})
+            
+            self.player_meter %= self.player.meter_threshold
+        
+        # stalemate machina check
+        if self.miss_counter >= 5:
+            winner = random.choice([self.player, self.npc])
+            loser = self.npc if winner == self.player else self.player
+            events.append[{"type": "info", "msg": "The Great Smith grows impatient with this foolish display!"}]
+            events.append[{"type": "stalemate", "winner": winner}]
+            events.append[{"type": "info", "msg": f"{winner.name} seizes the moment of divine intervention!"}]
+            events.append[{"type": "info", "msg": f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']}!"}]
+            self.miss_counter = 0
+            return events
+        
+        # NPC attack
+        if self.npc_meter >= self.player.meter_threshold and self.player.is_alive() and self.npc.is_alive():
+            evs = self.resolve_attack(self.npc,self.player) #now resolve attacks returns events list, which we capture here
+            events.extend(evs)
+
+            # apply defender status ticks
+            msgs = self.player.tick_status()
+            for m in msgs:
+                events.append({"type": "info", "msg": m})
+            
+            self.npc_meter %= self.npc.meter_threshold
+        
+        # we do this again because now each thing is happening "ahead of time"
+        if self.miss_counter >= 5:
+            winner = random.choice([self.player, self.npc])
+            loser = self.npc if winner == self.player else self.player
+            events.append[{"type": "info", "msg": "The Great Smith grows impatient with this foolish display!"}]
+            events.append[{"type": "stalemate", "winner": winner}]
+            events.append[{"type": "info", "msg": f"{winner.name} seizes the moment of divine intervention!"}]
+            events.append[{"type": "info", "msg": f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']}!"}]
+            self.miss_counter = 0
+            
+        return events
+            
+
 
     def stalemate_machina(self):
         if self.miss_counter >= 5:
@@ -152,7 +269,7 @@ class Combat:
             elif attacker.weapon.assign_weight() == "normal" and attacker.weapon.type == "Thrown":
                 return (f"{attacker.name}'s throw is just accurate enough to hit you! Ouch!")
             elif attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "Thrown":
-                return (f"With a toss so swift you never saw it coming, it strikes before['name'] you know it!")
+                return (f"With a toss so swift you never saw it coming, it strikes before you know it!")
             else:
                 return (f"{attacker.name} strikes with their {attacker.weapon.core['name']['name']}")
         if attacker == self.player:
