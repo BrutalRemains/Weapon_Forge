@@ -90,6 +90,7 @@ class Combat:
                     elif t == "status_applied":
                         eff = ev.get("effect")
                         tgt = ev.get("target_name") 
+                        print(f"{tgt} is afflicted with {eff}!")
                     elif t == "info":
                         print(ev.get("msg", "Info"))
                     else:
@@ -117,7 +118,7 @@ class Combat:
                         print(ev.get("flavor", "An attack misses."))
                     elif t == "status_applied":
                         eff = ev.get("effect")
-                        tgt = ev.get("target_name") or (ev.get("target").name if ev.get("target") else 'Target')
+                        tgt = ev.get("target_name")
                         print(f"{tgt} is afflicted with {eff}!")
                     elif t == "info":
                         print(ev.get("msg", "Info"))
@@ -169,15 +170,15 @@ class Combat:
         if self.miss_counter >= 5:
             winner = random.choice([self.player, self.npc])
             loser = self.npc if winner == self.player else self.player
-            events.append[{"type": "info", "msg": "The Great Smith grows impatient with this foolish display!"}]
-            events.append[{"type": "stalemate", "winner": winner}]
-            events.append[{"type": "info", "msg": f"{winner.name} seizes the moment of divine intervention!"}]
-            events.append[{"type": "info", "msg": f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']}!"}]
+            events.append({"type": "info", "msg": "The Great Smith grows impatient with this foolish display!"})
+            events.append({"type": "stalemate", "winner": winner})
+            events.append({"type": "info", "msg": f"{winner.name} seizes the moment of divine intervention!"})
+            events.append({"type": "info", "msg": f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']}!"})
             self.miss_counter = 0
             return events
         
         # NPC attack
-        if self.npc_meter >= self.player.meter_threshold and self.player.is_alive() and self.npc.is_alive():
+        if self.npc_meter >= self.npc.meter_threshold and self.player.is_alive() and self.npc.is_alive():
             evs = self.resolve_attack(self.npc,self.player) #now resolve attacks returns events list, which we capture here
             events.extend(evs)
 
@@ -192,10 +193,10 @@ class Combat:
         if self.miss_counter >= 5:
             winner = random.choice([self.player, self.npc])
             loser = self.npc if winner == self.player else self.player
-            events.append[{"type": "info", "msg": "The Great Smith grows impatient with this foolish display!"}]
-            events.append[{"type": "stalemate", "winner": winner}]
-            events.append[{"type": "info", "msg": f"{winner.name} seizes the moment of divine intervention!"}]
-            events.append[{"type": "info", "msg": f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']}!"}]
+            events.append({"type": "info", "msg": "The Great Smith grows impatient with this foolish display!"})
+            events.append({"type": "stalemate", "winner": winner})
+            events.append({"type": "info", "msg": f"{winner.name} seizes the moment of divine intervention!"})
+            events.append({"type": "info", "msg": f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']}!"})
             self.miss_counter = 0
             
         return events
@@ -290,4 +291,4 @@ class Combat:
             elif attacker.weapon.assign_weight() == "light" and attacker.weapon.type == "Thrown":
                 return (f"With a super swift toss, your throw strikes {defender.name} before they ever saw it coming!")
             else:
-                return print(f"You strike with your {attacker.weapon.core['name']['name']}")
+                return f"You strike with your {attacker.weapon.core['name']['name']}"
