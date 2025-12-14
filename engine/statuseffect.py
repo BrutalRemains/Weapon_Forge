@@ -4,6 +4,7 @@ class StatusEffect:
     def __init__(self, name, duration=1):
         self.name = name
         self.duration = duration
+        
     
     def apply(self, target):
         pass
@@ -16,24 +17,22 @@ class Burn(StatusEffect):
     def __init__(self, source):
         super().__init__(name="burn", duration=1)
         self.source = source # player or npc class
+        self.damage = 0
 
     def apply(self, target):
-        burn_damage = math.ceil(self.source.weapon.total_damage * 0.2)
-        target.take_damage(burn_damage)
-        print(f"{target.name} suffers {burn_damage} burn damage!")
-
-    def tick(self, target):
-        return super().tick(target)
-
+        self.damage = math.ceil(self.source.weapon.total_damage * 0.2)
+        target.take_damage(self.damage)
+        return self.damage
+    
 class Bleed(StatusEffect):
     def __init__(self, source):
         super().__init__(name="bleed", duration=random.randint(3,5))
         self.source = source
+        self.damage = 0
 
     def tick(self, target):
-        bleed_damage = math.ceil(self.source.weapon.total_damage * 0.05)
-        target.take_damage(bleed_damage)
-        print(f"{target.name} suffers {bleed_damage} bleed damage!")
+        self.damage = math.ceil(self.source.weapon.total_damage * 0.05)
+        target.take_damage(self.damage)
         return super().tick(target)
 
 class Stun(StatusEffect): # additional logic for stun is found in Player class and in combat.simulate_combat()

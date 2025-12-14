@@ -31,10 +31,13 @@ class Combat:
             total_damage = base_damage + enchant_bonus
 
             defender.take_damage(total_damage)
+
+            flavor_text = self.hit_flavor(attacker, defender) + f"\nIt deals {total_damage} damage!"
+
             events.append({
                 "type": "hit",
                 "attacker": attacker,
-                "flavor": self.hit_flavor(attacker, defender),
+                "flavor": flavor_text,
                 "damage": total_damage
             })
 
@@ -42,13 +45,18 @@ class Combat:
                 effect_chance = 20 # status chance
 
                 if random.random() < (effect_chance / 100):                    
-                    attacker.apply_status(defender, weapon.status_effect)
+                    effect = attacker.apply_status(defender, weapon.status_effect)
                     
                     events.append({
                     "type": "status_applied",
                     "effect": weapon.status_effect,
                     "target_name": defender.name,
                     })
+                    if hasattr(effect, 'damage') and effect.damage > 0:
+                        events.append({
+                            "type": "info",
+                            "msg": f"{defender.name} suffers {effect.damage} {weapon.status_effect} damage!"
+                        })
 
             if attacker == self.player:
                 self.player_damage_dealt += total_damage
@@ -175,6 +183,7 @@ class Combat:
             events.append({"type": "info", "msg": f"{winner.name} seizes the moment of divine intervention!"})
             events.append({"type": "info", "msg": f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']}!"})
             self.miss_counter = 0
+            loser.take_damage(loser.health)
             return events
         
         # NPC attack
@@ -197,12 +206,13 @@ class Combat:
             events.append({"type": "stalemate", "winner": winner})
             events.append({"type": "info", "msg": f"{winner.name} seizes the moment of divine intervention!"})
             events.append({"type": "info", "msg": f"{winner.name} strikes {loser.name} down with their {winner.weapon.core['name']}!"})
+            loser.take_damage(loser.health)
             self.miss_counter = 0
             
         return events
             
 
-
+    # cli compatability
     def stalemate_machina(self):
         if self.miss_counter >= 5:
             print("The Great Smith grows impatient with this foolish display!\n")

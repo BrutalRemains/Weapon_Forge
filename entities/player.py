@@ -39,9 +39,11 @@ class Player:
             effect = effect_map[effect_name](source) # takes the status effect string from the dictionary, builds the associated class: Burn(source)
             effect.apply(self)
             self.status_effects.append(effect)
+            return effect
+        return None
     
     def apply_status(self, target, status_effect):
-        target.take_status(status_effect, self)
+        return target.take_status(status_effect, self)
 
     def tick_status(self):
         messages = []

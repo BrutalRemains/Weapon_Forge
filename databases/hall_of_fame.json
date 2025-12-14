@@ -5,9 +5,19 @@
         "kill_count": 19
     },
     {
-        "name": "Kristian",
+        "name": "Morrigan",
         "weapon": "Weapon: Dart, Vine grip, attached with a weighted core. It is frost enchanted.\n",
-        "kill_count": 2
+        "kill_count": 7
+    },
+    {
+        "name": "GNF",
+        "weapon": "Weapon: Assault Rifle, Mahogany grip, attached with a silencer. It is frost enchanted.\n",
+        "kill_count": 3
+    },
+    {
+        "name": "adad",
+        "weapon": "Weapon: Chakram, Snakeskin grip, attached with a flashlight. ",
+        "kill_count": 3
     },
     {
         "name": "2",
@@ -15,13 +25,8 @@
         "kill_count": 1
     },
     {
-        "name": "Kristian",
-        "weapon": "Weapon: Pistol, Vine grip, attached with a flashlight. It is flame enchanted.\n",
-        "kill_count": 1
-    },
-    {
-        "name": "Ff",
-        "weapon": "Weapon: Screwdriver, Ivory grip, attached with a steel pommel. It is flame enchanted.\n",
+        "name": "Joey",
+        "weapon": "Weapon: Greathammer, Adamantine grip, attached with a counterweight. It is flame enchanted.\n",
         "kill_count": 1
     }
 ]

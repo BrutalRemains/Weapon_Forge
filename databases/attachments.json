@@ -3,16 +3,29 @@
     {"name": "Counterweight", "bonus_damage": 3, "accuracy": -1, "weight": 2, "type": "Melee"},
     {"name": "Axe Head", "bonus_damage": 5, "accuracy": -2, "weight": 3, "type": "Melee"},
     {"name": "Barbed Wire", "bonus_damage": 4, "accuracy": -2, "weight": 2, "type": "Melee"}, 
-
+    {"name": "Serrated Edge", "bonus_damage": 3, "accuracy": 1, "weight": 0, "type": "Melee"}, 
+    {"name": "Grip Tape", "bonus_damage": 1, "accuracy": 2, "weight": 0, "type": "Melee"}, 
+    {"name": "Weighted Chain", "bonus_damage": 6, "accuracy": -3, "weight": 4, "type": "Melee"}, 
+    {"name": "Photon Frame", "bonus_damage": 2, "accuracy": 1, "weight": -1, "type": "Melee"}, 
+    
     {"name": "Precision Sight", "bonus_damage": 0, "accuracy": 3, "weight": 1, "type": "Ranged"},
-    {"name": "Silencer", "bonus_damage": 0, "accuracy": 0, "weight": 1, "type": "Ranged"},
-    {"name": "Recoil Springs", "bonus_damage": 0, "accuracy": 2, "weight": 1, "type": "Ranged"},
+    {"name": "Silencer", "bonus_damage": 0, "accuracy": 0, "weight": 1, "type": "Ranged", "subtype": "not crude"},
+    {"name": "Recoil Springs", "bonus_damage": 0, "accuracy": 2, "weight": 1, "type": "Ranged", "subtype": "not crude"},
+    {"name": "Laser Sight", "bonus_damage": 0, "accuracy": 5, "weight": 1, "type": "Ranged", "subtype": "not crude"},
     {"name": "Bayonet", "bonus_damage": 1, "accuracy": -1, "weight": 1, "type": "Ranged"},
     {"name": "Scope", "bonus_damage": 0, "accuracy": 4, "weight": 1, "type": "Ranged"},
+    {"name": "Feather Fletchling", "bonus_damage": 0, "accuracy": 2, "weight": -1, "type": "Ranged"},
+    {"name": "Reinforced Frame", "bonus_damage": 2, "accuracy": 1, "weight": 2, "type": "Ranged"},
+
   
     {"name": "Weighted Core", "bonus_damage": 5, "accuracy": -3, "weight": 4, "type": "Thrown"},
-    {"name": "Acid Coat", "bonus_damage": 2, "accuracy": -1, "weight": 1, "type": "Thrown"},
+    {"name": "Acid Coating", "bonus_damage": 2, "accuracy": -1, "weight": 1, "type": "Thrown"},
     {"name": "Spiral Grooves", "bonus_damage": 0, "accuracy": 3, "weight": 0, "type": "Thrown"},   
+    {"name": "Barbed Tip", "bonus_damage": 3, "accuracy": 1, "weight": 0, "type": "Thrown"},   
+    {"name": "Explosive Charge", "bonus_damage": 7, "accuracy": -4, "weight": 3, "type": "Thrown"},   
+    {"name": "Oil Coating", "bonus_damage": 1, "accuracy": 2, "weight": 0, "type": "Thrown"},   
+    {"name": "Plague Coating", "bonus_damage": 2, "accuracy": -2, "weight": 1, "type": "Thrown"},   
+
     
     {"name": "Rabbits Foot", "bonus_damage": 0, "accuracy": 1, "weight": 0, "type": "Universal"},
     {"name": "Flashlight", "bonus_damage": 0, "accuracy": 1, "weight": 1, "type": "Universal"},

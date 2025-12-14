@@ -104,9 +104,11 @@ class Weapon:
 
         if perspective == "hof": #hall of fame
             return f"Weapon: {self.core["name"]}, {self.grip['name']} grip,{attachment_text} {enchant_text}"
+
+
 def generate_weapon():
     core = random.choice(cores)
-    valid_attachments = [a for a in attachments if a["type"] == core["type"] or a["type"] ==  "Universal"] # matches attachments to its appropriate possible type, very important line
+    valid_attachments = [a for a in attachments if (a["type"] == core["type"] or a["type"] == "Universal") and not (core.get("subtype") == "crude" and a.get("subtype") == "not crude")] # matches attachments to its appropriate possible type, excludes not_crude for crude weapons
     attachment = random.choice(valid_attachments)
     grip = random.choice(grips)
     enchant = random.choice(enchants)

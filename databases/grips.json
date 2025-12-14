@@ -14,5 +14,13 @@
     {"name": "Duct-tape Wrapped", "stability": 0, "bounce": 7},
     {"name": "Rubber", "stability": 3, "bounce": -1},
     {"name": "Chicken Bone", "stability": 3, "bounce": -1},
-    {"name": "Vine", "stability": 3, "bounce": -1}
+    {"name": "Vine", "stability": 3, "bounce": -1},
+    {"name": "Obsidian", "stability": 5, "bounce": -2},
+    {"name": "Carbon Fiber", "stability": 6, "bounce": 0},
+    {"name": "Hemp", "stability": 2, "bounce": -1},
+    {"name": "Silk", "stability": 2, "bounce": -3},
+    {"name": "Cork", "stability": 2, "bounce": 1},
+    {"name": "Titanium", "stability": 6, "bounce": -1},
+    {"name": "Seaweed", "stability": 1, "bounce": -3},
+    {"name": "Iron", "stability": 5, "bounce": 1}
 ]

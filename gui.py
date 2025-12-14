@@ -96,7 +96,7 @@ class GUI(tk.Tk):
             max_hp = 50
             self.npc_hp["maximum"] = max_hp
             self.npc_hp["value"] = self.npc.health
-            self.npc_name_label.config(text=f"Opponent:  {self.npc.name}")
+            self.npc_name_label.config(text=f"Opponent:  {self.npc.name} the {self.npc.race} {self.npc.role}")
 
     def new_duel(self):
         self.stop_auto()
@@ -176,10 +176,11 @@ class GUI(tk.Tk):
             etype = ev.get("type")
             if etype == "hit":
                 self.append_log(ev.get("flavor"))
+                self.append_log("")
             elif etype == "miss":
                 self.append_log(ev.get("flavor"))
-            elif etype == "status_applied":
-                
+                self.append_log("")
+            elif etype == "status_applied":                
                 tgt = ev.get('target_name')
                 eff = ev.get('effect')
                 self.append_log(f"{tgt} is afflicted with {eff}!")

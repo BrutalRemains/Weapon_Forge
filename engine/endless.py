@@ -56,7 +56,7 @@ def endless_duels(player, hall_of_fame):
 
 def hof(hall_of_fame):
     hall_of_fame.sort(key=lambda x: x["kill_count"], reverse=True) # this will ensure list is sorted by kill count descending
-    hall_of_fame[:] = hall_of_fame[:5]# this keeps the list at 5
+    hall_of_fame[:] = hall_of_fame[:10]# this keeps the list at 5
     save_hall_of_fame(hall_of_fame)
 
 def show_hall_of_fame():
