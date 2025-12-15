@@ -30,7 +30,11 @@ class NPC(Player):
 
 def generate_npc():
     name = random.choice(names)
-    role = random.choice(roles)
+    role_dict = random.choice(roles)
+    role_name = role_dict["name"]
+    role_type = role_dict["type"]
     race = random.choice(races)
     weapon = generate_weapon()
-    return NPC(name, weapon, role, race)
+    npc = NPC(name, weapon, role_name, race)
+    npc.role_type = role_type  # Store role type for achievements
+    return npc

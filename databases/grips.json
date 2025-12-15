@@ -22,5 +22,16 @@
     {"name": "Cork", "stability": 2, "bounce": 1},
     {"name": "Titanium", "stability": 6, "bounce": -1},
     {"name": "Seaweed", "stability": 1, "bounce": -3},
-    {"name": "Iron", "stability": 5, "bounce": 1}
+    {"name": "Iron", "stability": 5, "bounce": 1},
+    {"name": "Tungsten", "stability": 5, "bounce": -1},
+    {"name": "Slime", "stability": 0, "bounce": 6},
+    {"name": "Copper", "stability": 4, "bounce": -1},
+    {"name": "Kevlar", "stability": 6, "bounce": -1},
+    {"name": "Bamboo", "stability": 4, "bounce": 0},
+    {"name": "Styrofoam", "stability": 1, "bounce": 4},
+    {"name": "Sandstone", "stability": 3, "bounce": -2},
+    {"name": "Mythril", "stability": 6, "bounce": 1},
+    {"name": "Graphite", "stability": 2, "bounce": -4},
+    {"name": "Meteorite", "stability": 5, "bounce": -2}
+
 ]
