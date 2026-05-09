@@ -26,7 +26,7 @@ Apart from all else, every run is designed to be completely self-contained, with
 ## INSTALLATION INSTRUCTIONS
 
 ### CLI: 
-git clone https://github.com/brutalremains/Weapon_Forge
+git clone https://github.com/kristiansroberts/Weapon_Forge
 
 cd Weapon_Forge
 
