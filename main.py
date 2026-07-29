@@ -31,7 +31,7 @@ def main_menu():
             run = False
         
         else:
-            print("invalid choice")
+            print("invalid choice\n")
 
 def run_game():
     print("\nYou were brought here, to the Weapon Forge as a test subject for the Great Smith, and his creations.")
